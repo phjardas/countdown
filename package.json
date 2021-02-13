@@ -5,6 +5,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "csso": "^4.2.0",
     "pug": "^3.0.0"
   },
   "devDependencies": {

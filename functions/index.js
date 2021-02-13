@@ -31,7 +31,7 @@ function parseDate(s) {
   return {
     year: parseInt(parts[0], 10),
     month: parseInt(parts[1], 10),
-    day: parseInt(parts[2], 10),
+    date: parseInt(parts[2], 10),
   };
 }
 

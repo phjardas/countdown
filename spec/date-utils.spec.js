@@ -4,7 +4,7 @@ describe('date-utils', () => {
   it('should calculate calendar for same year', () => {
     const target = { year: 2021, month: 4, date: 19 };
     const now = { year: 2021, month: 2, date: 13 };
-    const calendar = getCalendar(target, now);
+    const calendar = getCalendar({ target, now });
     expect(calendar).toMatchInlineSnapshot(`
       Object {
         "months": Array [
@@ -705,7 +705,7 @@ describe('date-utils', () => {
   it('should calculate calendar for multiple years', () => {
     const target = { year: 2022, month: 4, date: 19 };
     const now = { year: 2021, month: 2, date: 13 };
-    const calendar = getCalendar(target, now);
+    const calendar = getCalendar({ target, now });
     expect(calendar).toMatchInlineSnapshot(`
       Object {
         "months": Array [
