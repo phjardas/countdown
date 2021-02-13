@@ -1,0 +1,7 @@
+{
+  "name": "countdown",
+  "private": true,
+  "dependencies": {
+    "pug": "^3.0.0"
+  }
+}
