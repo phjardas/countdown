@@ -17,7 +17,7 @@ const server = http.createServer(async (req, res) => {
   const handler = handlers.find((h) => url.pathname.startsWith(h.prefix));
 
   if (handler) {
-    const event = { path: url.pathname.replace(handler.prefix, '') };
+    const event = { path: `/.netlify/functions${url.pathname}` };
     const response = await handler.handler(event);
     if (response.headers) {
       Object.keys(response.headers).forEach((header) => res.setHeader(header, response.headers[header]));
