@@ -44,7 +44,7 @@ function createNow() {
   return {
     year: now.getFullYear(),
     month: now.getMonth() + 1,
-    day: now.getDaysOfMonth(),
+    day: now.getDate(),
   };
 }
 
