@@ -27,7 +27,7 @@ exports.handler = async function (event) {
 };
 
 function parseDate(s) {
-  if (!t) throw statusError(400, "Target date missing");
+  if (!s) throw statusError(400, "Target date missing");
 
   const parts = s.split(/-/);
   if (parts.length < 3) throw new statusError(400, `Invalid target: ${t}`);
