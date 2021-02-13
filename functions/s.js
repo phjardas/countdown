@@ -1,5 +1,6 @@
 const csso = require('csso');
 const pug = require('pug');
+const colorConvert = require('color-convert');
 
 const { getCalendar } = require('../lib/date-utils');
 const { parseParams } = require('../lib/params');
@@ -7,6 +8,7 @@ const { parseParams } = require('../lib/params');
 exports.handler = async (event) => {
   try {
     const params = parseParams(event);
+    params.primaryRGB = colorConvert.hex.rgb(params.primary);
     const calendar = getCalendar(params);
 
     return {
@@ -45,34 +47,42 @@ link(rel="icon" type="image/png" sizes="16x16" href="/i/"+params.icon.id+"/favic
 link(rel="mask-icon" href="/i/"+params.icon.id+"/safari-pinned-tab.svg" color=params.primary)
 meta(name="msapplication-TileColor" content=params.primary)
 meta(name="theme-color" content=params.primary)
+style.
+  html {
+    --primary: #{params.primary};
+    --primary-light: rgba(#{params.primaryRGB[0]}, #{params.primaryRGB[1]}, #{params.primaryRGB[2]}, 0.2);
+  }
 style= styles
 style= params.icon.style
 .page
-  .remaining
-    | Noch 
-    each part of calendar.remaining.duration
-      span.duration-part
-        span.duration-part-count= part[0]
-        |  #{part[1]} 
-  .calendar
-    each month in calendar.months
-      .month
-        h2.month-name
-          | #{getMonthName(month)}
-          if (calendar.multiYear)
-            |  #{month.year}
-        .weeks
-          each week in month.weeks
-            .week
-              each day in week
-                if !day
-                  .day.pad
-                else
-                  div.day(class=((day.past || day.future) ? 'muted' : ''))
-                    if day.target
-                      | !{params.icon.img}
-                    else
-                      span= day.date
+  if calendar.past
+    p Schon vorbei!
+  else
+    .remaining
+      | Noch 
+      each part of calendar.remaining.duration
+        span.duration-part
+          span.duration-part-count= part[0]
+          |  #{part[1]} 
+    .calendar
+      each month in calendar.months
+        .month
+          h2.month-name
+            | #{getMonthName(month)}
+            if (calendar.multiYear)
+              |  #{month.year}
+          .weeks
+            each week in month.weeks
+              .week
+                each day in week
+                  if !day
+                    .day.pad
+                  else
+                    div.day(class=((day.past || day.future) ? 'muted' : (day.current ? 'current' : (day.target ? 'target' : ''))))
+                      if day.target
+                        | !{params.icon.img}
+                      else
+                        span= day.date
 `.trim()
 );
 
@@ -138,6 +148,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
 }
 
 .day.current:before {
@@ -149,10 +160,13 @@ body {
   right: 0;
   bottom: 0;
   border-radius: 50%;
-  background: rgba(255, 0, 0, 0.2);
+  background: var(--primary-light);
 }
 .day.muted {
   color: var(--muted);
+}
+.day.target {
+  color: var(--primary);
 }
 
 .remaining {
