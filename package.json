@@ -6,6 +6,9 @@
     "dev": "nodemon",
     "test": "jest"
   },
+  "engines": {
+    "node": "12"
+  },
   "dependencies": {
     "csso": "^4.2.0",
     "pug": "^3.0.0"
