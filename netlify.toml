@@ -1,7 +1,13 @@
 [build]
+  publish = "public"
   functions = "functions"
 
 [[redirects]]
-  from = "/"
-  to = "/.netlify/functions/index"
+  from = "/s/*"
+  to = "/.netlify/functions/s/*"
+  status = 200
+
+[[redirects]]
+  from = "/m/*"
+  to = "/.netlify/functions/m/*"
   status = 200
