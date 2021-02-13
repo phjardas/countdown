@@ -9,6 +9,10 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
 html {
   --color: #444;
   --muted: #ccc;
@@ -19,39 +23,46 @@ body {
   color: var(--color);
   background: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  line-height: 1.5;
+  padding: 2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-rows: auto auto 1fr;
 }
 
-.page {
-  margin: 2rem;
+h1 {
+  color: #999;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#form {
+  display: grid;
+  gap: .5rem 1rem;
+  grid-template-columns: auto 1fr;
 }
 
 #preview {
-  margin-top: 2rem;
   width: 100%;
-  height: 600px;
+  height: 100%;
 }
 </style>
 
-<div class="page">
-  <h1>Countdown</h1>
-  <form id="form">
-    <p>
-      <label for="l">Title:</label>
-      <input id="l" maxlength="50" required autofocus value="Test">
-    </p>
-    <p>
-      <label for="t">Target date:</label>
-      <input type="date" id="t" required value="2021-04-19">
-    </p>
-    <p>
-      <label for="i">Icon:</label>
-      <select id="i" required value="h">
-        <option value="h">Heart</option>
-      </select>
-    </p>
-  </form>
-  <iframe id="preview"></iframe>
-</div>
+<h1>Countdown</h1>
+<form id="form">
+  <label for="l">Title:</label>
+  <input id="l" maxlength="50" required autofocus value="Test">
+  <label for="t">Target date:</label>
+  <input type="date" id="t" required value="2021-04-19">
+  <label for="i">Icon:</label>
+  <select id="i" required value="h">
+    <option value="h">Heart</option>
+  </select>
+  <label for="p">Primary color:</label>
+  <input type="color" id="p" required value="#ff0000">
+</form>
+<iframe id="preview"></iframe>
 
 <script>
   const now = new Date().toISOString().substring(0, 10);
@@ -60,7 +71,7 @@ body {
   const params = {};
   const preview = document.getElementById('preview');
 
-  ['l','t','i'].forEach(id => {
+  ['l','t','i','p'].forEach(id => {
     const el = document.getElementById(id);
     params[id] = el.value;
     el.addEventListener('change', e => {
@@ -75,7 +86,8 @@ body {
   })
 
   function update() {
-    preview.src = `/s/${btoa(JSON.stringify(params))}`;
+    const ps = { ...params, p: params.p.substring(1) }
+    preview.src = `/s/${btoa(JSON.stringify(ps))}`;
   }
 
   update();
