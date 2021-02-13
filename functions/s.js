@@ -4,8 +4,6 @@ const pug = require('pug');
 const { getCalendar } = require('../lib/date-utils');
 const { parseParams } = require('../lib/params');
 
-const prefix = (exports.prefix = '/s/');
-
 exports.handler = (event) => {
   return {
     statusCode: 200,
@@ -14,7 +12,7 @@ exports.handler = (event) => {
   };
 
   try {
-    const params = parseParams({ ...event, path: event.path.replace(prefix, '') });
+    const params = parseParams(event);
     const calendar = getCalendar(params);
 
     return {

@@ -1,10 +1,8 @@
 const { parseParams } = require('../lib/params');
 
-const prefix = (exports.prefix = '/m/');
-
 exports.handler = (event) => {
   try {
-    const params = parseParams({ ...event, path: event.path.replace(prefix, '') });
+    const params = parseParams(event);
     const manifest = {
       name: params.title,
       short_name: params.title,
