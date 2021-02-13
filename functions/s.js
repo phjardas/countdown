@@ -7,6 +7,12 @@ const { parseParams } = require('../lib/params');
 const prefix = (exports.prefix = '/s/');
 
 exports.handler = (event) => {
+  return {
+    statusCode: 200,
+    header: { 'content-type': 'application/json;charset=utf-8' },
+    body: JSON.stringify(event, null, 2),
+  };
+
   try {
     const params = parseParams({ ...event, path: event.path.replace(prefix, '') });
     const calendar = getCalendar(params);
