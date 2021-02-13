@@ -8,7 +8,7 @@ exports.handler = async function (event) {
     headers: {
       "content-type": "text/html;charset=utf-8",
     },
-    body: template({ target: t }),
+    body: template({ target: t, styles }),
   };
 };
 
@@ -63,8 +63,7 @@ body {
 }
 `;
 
-const template = pug.compile(
-  `
+const template = pug.compile(`
 doctype html
 style= styles
 title Countdown
@@ -72,8 +71,4 @@ title Countdown
   h1 Countdown
   p Target:
     strong= target
-`,
-  {
-    globals: { styles },
-  }
-);
+`);
