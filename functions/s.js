@@ -55,6 +55,7 @@ style.
 style= styles
 style= params.icon.style
 .page
+  h1= params.title
   if calendar.past
     p Schon vorbei!
   else
@@ -103,6 +104,15 @@ body {
   color: var(--color);
   background: var(--bg);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  line-height: 1;
+}
+
+h1 {
+  color: #999;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
 }
 
 .page {
@@ -148,7 +158,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  line-height: 1;
 }
 
 .day.current:before {
