@@ -4,7 +4,7 @@ const pug = require('pug');
 const { getCalendar } = require('../lib/date-utils');
 const { parseParams } = require('../lib/params');
 
-exports.handler = (event) => {
+exports.handler = async (event) => {
   return {
     statusCode: 200,
     header: { 'content-type': 'application/json;charset=utf-8' },

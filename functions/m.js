@@ -1,6 +1,6 @@
 const { parseParams } = require('../lib/params');
 
-exports.handler = (event) => {
+exports.handler = async (event) => {
   try {
     const params = parseParams(event);
     const manifest = {
