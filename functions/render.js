@@ -4,7 +4,7 @@ const renderers = require('../lib/render');
 exports.handler = async (event) => {
   try {
     const parts = event.path.replace(/^\/.netlify\/functions\/render\//, '').split('/');
-    return { statusCode: 200, body: JSON.stringify({ parts }, null, 2) };
+    return { statusCode: 200, body: JSON.stringify({ path: event.path, parts }, null, 2) };
     const params = parseParams(parts[0]);
     const type = parts.length > 1 ? parts[1] : 'index.html';
     const renderer = renderers[type];
