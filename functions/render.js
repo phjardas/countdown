@@ -4,11 +4,12 @@ const renderers = require('../lib/render');
 exports.handler = async (event) => {
   try {
     const parts = event.path.replace(/.*\/r\//, '').split('/');
-    console.log(JSON.stringify({ path: event.path, parts }));
     const params = parseParams(parts[0]);
     const type = parts.length > 1 ? parts[1] : 'index.html';
     const renderer = renderers[type];
-    return renderer ? renderer(params) : { statusCode: 404 };
+    const response = renderer ? renderer(params) : { statusCode: 404 };
+    console.log(JSON.stringify({ path: event.path, parts, response }));
+    return response;
   } catch (error) {
     return {
       statusCode: error.statusCode || 500,
