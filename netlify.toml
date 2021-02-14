@@ -1,6 +1,7 @@
 [build]
   publish = "public"
   functions = "functions"
+  build = "npm run build"
 
 [[redirects]]
   from = "/r/*"

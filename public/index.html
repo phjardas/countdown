@@ -90,7 +90,8 @@ h1 {
   function update() {
     const ps = { ...params, p: params.p.substring(1) }
     if (ps.t && ps.l) {
-      const url = `${location.origin.replace(/:(80|443)$/,'')}/r/${btoa(JSON.stringify(ps)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'')}`;
+      const s = btoa(JSON.stringify(ps)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+      const url = `${location.origin.replace(/:(80|443)$/,'')}/r/${s}/`;
       a.href = url;
       a.innerHTML = url;
       preview.src = url;

@@ -3,7 +3,10 @@ const renderers = require('../lib/render');
 
 exports.handler = async (event) => {
   try {
-    const parts = event.path.replace(/.*\/r\//, '').split('/');
+    const parts = event.path
+      .replace(/.*\/r\//, '')
+      .split('/')
+      .filter((s) => s.length);
     const params = parseParams(parts[0]);
     const type = parts.length > 1 ? parts[1] : 'index.html';
     const renderer = renderers[type];
