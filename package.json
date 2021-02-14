@@ -12,7 +12,8 @@
   "dependencies": {
     "color-convert": "^2.0.1",
     "csso": "^4.2.0",
-    "pug": "^3.0.0"
+    "pug": "^3.0.0",
+    "terser": "^5.6.0"
   },
   "devDependencies": {
     "node-static": "^0.7.11",
