@@ -11,7 +11,7 @@ const renderPrefix = '/r/';
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${port}`);
   if (url.pathname.startsWith(renderPrefix)) {
-    const event = { path: `/.netlify/functions${url.pathname.replace(renderPrefix, '/render/r/')}` };
+    const event = { path: url.pathname };
     const response = await render(event);
     res.writeHead(response.statusCode, response.headers);
     res.end(response.body);
