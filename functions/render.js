@@ -7,7 +7,7 @@ exports.handler = async (event) => {
     const params = parseParams(parts[0]);
     const type = parts.length > 1 ? parts[1] : 'index.html';
     const renderer = renderers[type];
-    return renderer ? await renderer(params) : { statusCode: 404 };
+    return renderer ? renderer(params) : { statusCode: 404 };
   } catch (error) {
     return {
       statusCode: error.statusCode || 500,
