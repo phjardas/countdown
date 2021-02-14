@@ -1,5 +1,9 @@
-const { parseParams } = require('../lib/params');
-const renderers = require('../lib/render');
+const { parseParams } = require('./params');
+const renderers = {
+  'index.html': require('./home'),
+  'manifest.json': require('./manifest'),
+  'sw.js': require('./sw'),
+};
 
 exports.handler = async (event) => {
   try {

@@ -5,7 +5,7 @@ const etag = require('etag');
 const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
-const { getCalendar } = require('../date-utils');
+const { getCalendar } = require('./date-utils');
 
 const readFile = promisify(fs.readFile);
 

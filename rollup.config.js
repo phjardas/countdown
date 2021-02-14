@@ -6,7 +6,7 @@ import replace from '@rollup/plugin-replace';
 export default ['sw.tpl.js', 'home.script.tpl.js'].map((input) => ({
   input: `src/render/${input}`,
   output: {
-    dir: 'lib/render',
+    dir: 'functions/render',
     format: 'cjs',
   },
   plugins: [

@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "rollup -c",
+    "build": "node assets.js && rollup -c",
     "dev": "nodemon",
     "test": "jest"
   },

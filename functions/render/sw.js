@@ -4,9 +4,8 @@ const { promisify } = require('util');
 const etag = require('etag');
 const home = require('./home');
 const manifest = require('./manifest');
-const { handlerResponse, fileIntegrity } = require('../integrity');
+const { handlerResponse, fileIntegrity } = require('./integrity');
 
-const basedir = path.resolve(__dirname, '..', '..');
 const template = promisify(fs.readFile)(path.resolve(__dirname, 'sw.tpl.js'), 'utf-8');
 
 module.exports = async (params) => {
@@ -33,11 +32,12 @@ module.exports = async (params) => {
 };
 
 async function hashedResponse(url, handler, params) {
-  const { integrity } = await handlerResponse(handler, params);
-  return { url, revision: integrity, integrity };
+  const { revision, integrity } = await handlerResponse(handler, params);
+  return { url, revision, integrity };
 }
 
 async function hashedFile(filename) {
-  const integrity = await fileIntegrity(`public/${filename}`);
-  return { url: `/${filename}`, revision: integrity, integrity };
+  const url = `/${filename}`;
+  const { revision, integrity } = await fileIntegrity(url);
+  return { url, revision, integrity };
 }
