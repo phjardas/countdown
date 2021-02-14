@@ -11,10 +11,16 @@ const renderPrefix = '/r/';
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${port}`);
   if (url.pathname.startsWith(renderPrefix)) {
-    const event = { path: url.pathname };
-    const response = await render(event);
-    res.writeHead(response.statusCode, response.headers);
-    res.end(response.body);
+    try {
+      const event = { path: url.pathname };
+      const response = await render(event);
+      res.writeHead(response.statusCode, response.headers);
+      res.end(response.body);
+    } catch (error) {
+      console.error(error);
+      res.writeHead(500, { 'content-type': 'text/plain; charset=utf-8' });
+      res.end(error.message);
+    }
   } else {
     staticServer.serve(req, res);
   }
