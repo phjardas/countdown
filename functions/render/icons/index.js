@@ -1,1 +1,1 @@
-module.exports = [require('./h')].reduce((a, b) => ({ ...a, [b.id]: b }), {});
+module.exports = [require('./h'), require('./s')].reduce((a, b) => ({ ...a, [b.id]: b }), {});
