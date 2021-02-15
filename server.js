@@ -15,7 +15,12 @@ const server = http.createServer(async (req, res) => {
       const event = { path: url.pathname };
       const response = await render(event);
       res.writeHead(response.statusCode, response.headers);
-      res.end(response.body);
+
+      if (response.isBase64Encoded) {
+        res.end(Buffer.from(response.body, 'base64'));
+      } else {
+        res.end(response.body);
+      }
     } catch (error) {
       console.error(error);
       res.writeHead(500, { 'content-type': 'text/plain; charset=utf-8' });

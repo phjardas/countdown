@@ -139,6 +139,18 @@ h1 {
   color: var(--primary);
 }
 
+.icon {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon {
+    animation: none;
+  }
+}
+
 #remaining {
   margin-bottom: 2rem;
   text-align: center;
@@ -179,10 +191,10 @@ meta(charset="utf-8")
 title= params.title
 meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
 link(rel="manifest" href="/r/"+params.s+"/manifest.json")
-link(rel="apple-touch-icon" sizes="180x180" href="/i/"+params.icon.id+"/apple-touch-icon.png")
-link(rel="icon" type="image/png" sizes="32x32" href="/i/"+params.icon.id+"/favicon-32x32.png")
-link(rel="icon" type="image/png" sizes="16x16" href="/i/"+params.icon.id+"/favicon-16x16.png")
-link(rel="mask-icon" href="/i/"+params.icon.id+"/safari-pinned-tab.svg" color=params.primary)
+link(rel="apple-touch-icon" sizes="180x180" href="/r/"+params.s+"/apple-touch-icon.png")
+link(rel="icon" type="image/png" sizes="32x32" href="/r/"+params.s+"/favicon-32x32.png")
+link(rel="icon" type="image/png" sizes="16x16" href="/r/"+params.s+"/favicon-16x16.png")
+link(rel="mask-icon" href="/r/"+params.s+"/safari-pinned-tab.svg" color=params.primary)
 meta(name="msapplication-TileColor" content=params.primary)
 meta(name="theme-color" content=params.primary)
 style.

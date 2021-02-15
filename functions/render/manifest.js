@@ -6,7 +6,7 @@ module.exports = (params) => {
     short_name: params.title,
     icons: [
       {
-        src: `/i/${params.icon.id}/android-chrome.png`,
+        src: `/r/${params.s}/android-chrome.png`,
         sizes: '1024x1024',
         type: 'image/png',
         purpose: 'any maskable',

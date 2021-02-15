@@ -1,4 +1,3 @@
 /node_modules/
 /public/sw.js
-/functions/render/assets.js
 /functions/render/*.tpl.js
