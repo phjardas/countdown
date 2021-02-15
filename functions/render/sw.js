@@ -6,7 +6,7 @@ const etag = require('etag');
 
 const template = promisify(fs.readFile)(path.resolve(__dirname, 'sw.tpl.js'), 'utf-8');
 
-async function sw(params, handle) {
+module.exports = async function sw(params, handle) {
   const urls = JSON.stringify(
     await Promise.all([
       hashedResponse('', handle, params),
@@ -31,21 +31,8 @@ async function sw(params, handle) {
   };
 }
 
-async function noop() {
-  return {
-    statusCode: 200,
-    headers: {
-      'content-type': 'application/javascript;charset=utf-8',
-      'content-length': 0,
-    },
-    body: '',
-  };
-}
-
 async function hashedResponse(type, handle, params) {
   const data = (await handle(type, params)).body;
   const revision = crypto.createHash('md5').update(data).digest('hex');
   return { url: `./${type}`, revision };
 }
-
-module.exports = process.env.NODE_ENV === 'production' ? sw : noop;
