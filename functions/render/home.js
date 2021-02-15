@@ -201,7 +201,7 @@ style.
   html{--primary:#{params.primary};--primary-light:rgba(#{primaryRGB[0]},#{primaryRGB[1]},#{primaryRGB[2]},.2)}${styles}
 style= params.icon.style
 script.
-  window.__calendar={s:"#{params.s}",target:!{JSON.stringify(calendar.target)}};
+  window.__calendar={s:"#{params.s}",target:!{JSON.stringify(calendar.target)},preview:#{params.preview}};
 script !{script}
 .page
   h1= params.title

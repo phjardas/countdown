@@ -2,24 +2,42 @@ import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
+import svelte from 'rollup-plugin-svelte';
 
-const plugins = [
-  nodeResolve(),
-  commonjs(),
-  replace({
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-  }),
-];
+const production = process.env.NODE_ENV === 'production';
 
-if (process.env.NODE_ENV === 'production') {
-  plugins.push(terser());
-}
-
-export default ['sw.tpl.js', 'home.script.tpl.js'].map((input) => ({
-  input: `src/render/${input}`,
-  output: {
-    dir: 'functions/render',
-    format: 'cjs',
+export default [
+  {
+    input: 'src/main.js',
+    output: {
+      sourcemap: true,
+      format: 'iife',
+      name: 'app',
+      file: 'public/bundle.js',
+    },
+    plugins: [
+      svelte({ compilerOptions: { dev: !production } }),
+      nodeResolve({ browser: true, dedupe: ['svelte'] }),
+      commonjs(),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      }),
+      production && terser(),
+    ],
   },
-  plugins,
-}));
+  ...['sw.tpl.js', 'home.script.tpl.js'].map((input) => ({
+    input: `src/render/${input}`,
+    output: {
+      dir: 'functions/render',
+      format: 'cjs',
+    },
+    plugins: [
+      nodeResolve(),
+      commonjs(),
+      replace({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      }),
+      production && terser(),
+    ],
+  })),
+];

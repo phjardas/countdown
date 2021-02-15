@@ -1,6 +1,7 @@
 const http = require('http');
 const path = require('path');
 const static = require('node-static');
+const qs = require('querystring');
 
 const port = 3000;
 
@@ -12,7 +13,7 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${port}`);
   if (url.pathname.startsWith(renderPrefix)) {
     try {
-      const event = { path: url.pathname };
+      const event = { path: url.pathname, queryStringParameters: url.search ? qs.parse(url.search.substring(1)) : {} };
       const response = await render(event);
       res.writeHead(response.statusCode, response.headers);
 

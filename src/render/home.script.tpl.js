@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
   update();
 });
 
-if ('serviceWorker' in navigator) {
+if (!__calendar.preview && 'serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     const wb = new Workbox('/r/' + __calendar.s + '/sw.js');
     let registration;

@@ -28,6 +28,7 @@ body {
   display: grid;
   gap: 1rem;
   grid-template-rows: auto auto auto 1fr;
+  line-height: 1;
 }
 
 h1 {
@@ -35,6 +36,7 @@ h1 {
   font-weight: normal;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-align: center;
 }
 
 #form {
@@ -46,58 +48,28 @@ h1 {
 #preview {
   width: 100%;
   height: 100%;
+  border: none;
+}
+
+p {
+  text-align: center;
+}
+
+.button {
+  display: inline-block;
+  text-decoration: none;
+  background-color: var(--color);
+  color: white;
+  padding: .5em 1em;
+  font-weight: bold;
+  font-size: 1.25em;
+  border-radius: .5em;
+  border: 3px solid var(--color);
+  transition: background-color 100ms linear, color 100ms linear;
+}
+.button:hover {
+  background-color: white;
+  color: var(--color);
 }
 </style>
-
-<h1>Countdown</h1>
-<form id="form">
-  <label for="l">Title:</label>
-  <input id="l" maxlength="50" required autofocus>
-  <label for="t">Target date:</label>
-  <input type="date" id="t" required>
-  <label for="i">Icon:</label>
-  <select id="i" required value="h">
-    <option value="h">Heart</option>
-    <option value="s">Star</option>
-  </select>
-  <label for="p">Primary color:</label>
-  <input type="color" id="p" required value="#ff0000">
-</form>
-<p>Link: <a id="url"></a></p>
-<iframe id="preview"></iframe>
-
-<script>
-  const now = new Date().toISOString().substring(0, 10);
-  document.getElementById('t').min = now;
-
-  const params = {};
-  const preview = document.getElementById('preview');
-  const a = document.getElementById('url');
-
-  ['l','t','i','p'].forEach(id => {
-    const el = document.getElementById(id);
-    params[id] = el.value;
-    el.addEventListener('change', e => {
-      params[id] = e.target.value;
-      update();
-    });
-  });
-
-  document.getElementById('form').addEventListener('submit', e => {
-    e.preventDefault();
-    update();
-  })
-
-  function update() {
-    const ps = { ...params, p: params.p.substring(1) }
-    if (ps.t && ps.l) {
-      const s = btoa(JSON.stringify(ps)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
-      const url = `${location.origin.replace(/:(80|443)$/,'')}/r/${s}/`;
-      a.href = url;
-      a.innerHTML = url;
-      preview.src = url;
-    }
-  }
-
-  update();
-</script>
+<script defer src="/bundle.js"></script>

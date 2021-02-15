@@ -1,6 +1,6 @@
 const icons = require('./icons');
 
-module.exports.parseParams = function parseParams(s) {
+module.exports.parseParams = function parseParams(s, query) {
   if (!s) throw statusError(400, 'Missing configuration');
 
   try {
@@ -12,6 +12,7 @@ module.exports.parseParams = function parseParams(s) {
       title: params.l || 'Countdown',
       icon: parseIcon(params.i),
       primary: `#${params.p || 'ff0000'}`,
+      preview: 'p' in query,
     };
   } catch (error) {
     throw statusError(400, `Invalid configuration '${s}': ${error.message}`);
