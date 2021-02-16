@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 const { getCalendar } = require('./date-utils');
+const { loadIcon } = require('./icons');
 
 const readFile = promisify(fs.readFile);
 
@@ -14,11 +15,13 @@ const script = readFile(path.resolve(__dirname, 'home.script.tpl.js'), 'utf-8');
 module.exports = async (params) => {
   const primaryRGB = colorConvert.hex.rgb(params.primary);
   const calendar = getCalendar(params);
+  const icon = loadIcon(params.icon);
   const body = template({
     params,
     primaryRGB,
     calendar,
     script: await script,
+    icon,
     getMonthName,
   });
   const expiry = getExpiry();
@@ -145,6 +148,22 @@ h1 {
   fill: currentColor;
 }
 
+.icon-pulse {
+  animation: icon-pulse 1s ease infinite;
+}
+
+@keyframes icon-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .icon {
     animation: none;
@@ -199,7 +218,6 @@ meta(name="msapplication-TileColor" content=params.primary)
 meta(name="theme-color" content=params.primary)
 style.
   html{--primary:#{params.primary};--primary-light:rgba(#{primaryRGB[0]},#{primaryRGB[1]},#{primaryRGB[2]},.2)}${styles}
-style= params.icon.style
 script.
   window.__calendar={s:"#{params.s}",target:!{JSON.stringify(calendar.target)},preview:#{params.preview}};
 script !{script}
@@ -225,7 +243,7 @@ script !{script}
                   else
                     div.day(class=((day.past || day.future) ? 'muted' : (day.current ? 'current' : (day.target ? 'target' : ''))))
                       if day.target
-                        | !{params.icon.img}
+                        | !{icon}
                       else
                         span= day.date
 `.trim()

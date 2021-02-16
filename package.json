@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "NODE_ENV=production rollup -c",
+    "build": "NODE_ENV=production rollup --config",
     "dev": "concurrently --kill-others 'npm run dev:build' 'npm run dev:serve'",
-    "dev:build": "rollup -c --watch",
+    "dev:build": "rollup --config --watch --no-watch.clearScreen",
     "dev:serve": "nodemon --watch functions --watch server.js",
     "test": "jest"
   },

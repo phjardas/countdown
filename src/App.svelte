@@ -1,4 +1,15 @@
 <script>
+  const icons = [
+    { id: 'a', label: 'Car' },
+    { id: 'b', label: 'Beer' },
+    { id: 'c', label: 'Check' },
+    { id: 'h', label: 'Heart' },
+    { id: 'm', label: 'Music' },
+    { id: 'p', label: 'Plane' },
+    { id: 's', label: 'Star' },
+    { id: 'u', label: 'Umbrella' },
+  ].sort((a, b) => a.label.localeCompare(b.label));
+
   let title = '';
   let date = '';
   let icon = 'h';
@@ -30,8 +41,9 @@
   <input type="date" id="t" required bind:value={date} />
   <label for="i">Icon:</label>
   <select id="i" required bind:value={icon}>
-    <option value="h">Heart</option>
-    <option value="s">Star</option>
+    {#each icons as icon}
+      <option value={icon.id}>{icon.label}</option>
+    {/each}
   </select>
   <label for="p">Primary color:</label>
   <input type="color" id="p" required bind:value={color} />

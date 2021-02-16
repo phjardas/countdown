@@ -15,7 +15,7 @@ module.exports = {
 
 function imageRenderer({ size, type, iconFactor = 1, background = 0x00000000 }) {
   return async (params) => {
-    const icon = await Jimp.read(path.resolve(__dirname, `icons/${params.icon.id}/${params.icon.id}.png`));
+    const icon = await Jimp.read(path.resolve(__dirname, 'icons', `${params.icon}.png`));
     const primary = colorConvert.hex.rgb(params.primary);
 
     const data = await new Promise(

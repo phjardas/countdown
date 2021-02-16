@@ -35,6 +35,12 @@ var app = (function () {
     function detach(node) {
         node.parentNode.removeChild(node);
     }
+    function destroy_each(iterations, detaching) {
+        for (let i = 0; i < iterations.length; i += 1) {
+            if (iterations[i])
+                iterations[i].d(detaching);
+        }
+    }
     function element(name) {
         return document.createElement(name);
     }
@@ -313,6 +319,15 @@ var app = (function () {
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
     }
+    function validate_each_argument(arg) {
+        if (typeof arg !== 'string' && !(arg && typeof arg === 'object' && 'length' in arg)) {
+            let msg = '{#each} only iterates over array-like objects.';
+            if (typeof Symbol === 'function' && arg && Symbol.iterator in arg) {
+                msg += ' You can use a spread to convert this iterable into an array.';
+            }
+            throw new Error(msg);
+        }
+    }
     function validate_slots(name, slot, keys) {
         for (const slot_key of Object.keys(slot)) {
             if (!~keys.indexOf(slot_key)) {
@@ -344,7 +359,48 @@ var app = (function () {
 
     const file = "src/App.svelte";
 
-    // (39:0) {#if url}
+    function get_each_context(ctx, list, i) {
+    	const child_ctx = ctx.slice();
+    	child_ctx[3] = list[i];
+    	return child_ctx;
+    }
+
+    // (44:4) {#each icons as icon}
+    function create_each_block(ctx) {
+    	let option;
+    	let t_value = /*icon*/ ctx[3].label + "";
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			option = element("option");
+    			t = text(t_value);
+    			option.__value = /*icon*/ ctx[3].id;
+    			option.value = option.__value;
+    			add_location(option, file, 44, 6, 1101);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, option, anchor);
+    			append_dev(option, t);
+    		},
+    		p: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(option);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_each_block.name,
+    		type: "each",
+    		source: "(44:4) {#each icons as icon}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (51:0) {#if url}
     function create_if_block(ctx) {
     	let p;
     	let a;
@@ -363,13 +419,13 @@ var app = (function () {
     			iframe = element("iframe");
     			attr_dev(a, "href", /*url*/ ctx[4]);
     			attr_dev(a, "class", "button");
-    			attr_dev(a, "style", a_style_value = `--color: ${/*color*/ ctx[3]}`);
-    			add_location(a, file, 40, 4, 962);
-    			add_location(p, file, 39, 2, 954);
+    			attr_dev(a, "style", a_style_value = `--color: ${/*color*/ ctx[2]}`);
+    			add_location(a, file, 52, 4, 1299);
+    			add_location(p, file, 51, 2, 1291);
     			attr_dev(iframe, "id", "preview");
     			attr_dev(iframe, "title", "Preview");
     			if (iframe.src !== (iframe_src_value = `${/*url*/ ctx[4]}?p`)) attr_dev(iframe, "src", iframe_src_value);
-    			add_location(iframe, file, 42, 2, 1058);
+    			add_location(iframe, file, 54, 2, 1395);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -383,7 +439,7 @@ var app = (function () {
     				attr_dev(a, "href", /*url*/ ctx[4]);
     			}
 
-    			if (dirty & /*color*/ 8 && a_style_value !== (a_style_value = `--color: ${/*color*/ ctx[3]}`)) {
+    			if (dirty & /*color*/ 4 && a_style_value !== (a_style_value = `--color: ${/*color*/ ctx[2]}`)) {
     				attr_dev(a, "style", a_style_value);
     			}
 
@@ -402,7 +458,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(39:0) {#if url}",
+    		source: "(51:0) {#if url}",
     		ctx
     	});
 
@@ -424,16 +480,22 @@ var app = (function () {
     	let label2;
     	let t9;
     	let select;
-    	let option0;
-    	let option1;
-    	let t12;
+    	let t10;
     	let label3;
-    	let t14;
+    	let t12;
     	let input2;
-    	let t15;
+    	let t13;
     	let if_block_anchor;
     	let mounted;
     	let dispose;
+    	let each_value = /*icons*/ ctx[5];
+    	validate_each_argument(each_value);
+    	let each_blocks = [];
+
+    	for (let i = 0; i < each_value.length; i += 1) {
+    		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+    	}
+
     	let if_block = /*url*/ ctx[4] && create_if_block(ctx);
 
     	const block = {
@@ -456,51 +518,46 @@ var app = (function () {
     			label2.textContent = "Icon:";
     			t9 = space();
     			select = element("select");
-    			option0 = element("option");
-    			option0.textContent = "Heart";
-    			option1 = element("option");
-    			option1.textContent = "Star";
-    			t12 = space();
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].c();
+    			}
+
+    			t10 = space();
     			label3 = element("label");
     			label3.textContent = "Primary color:";
-    			t14 = space();
+    			t12 = space();
     			input2 = element("input");
-    			t15 = space();
+    			t13 = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			add_location(h1, file, 24, 0, 447);
+    			add_location(h1, file, 35, 0, 767);
     			attr_dev(label0, "for", "l");
-    			add_location(label0, file, 26, 2, 485);
+    			add_location(label0, file, 37, 2, 805);
     			attr_dev(input0, "id", "l");
     			attr_dev(input0, "maxlength", "50");
     			input0.required = true;
-    			add_location(input0, file, 27, 2, 517);
+    			add_location(input0, file, 38, 2, 837);
     			attr_dev(label1, "for", "t");
-    			add_location(label1, file, 28, 2, 579);
+    			add_location(label1, file, 39, 2, 899);
     			attr_dev(input1, "type", "date");
     			attr_dev(input1, "id", "t");
     			input1.required = true;
-    			add_location(input1, file, 29, 2, 617);
+    			add_location(input1, file, 40, 2, 937);
     			attr_dev(label2, "for", "i");
-    			add_location(label2, file, 30, 2, 675);
-    			option0.__value = "h";
-    			option0.value = option0.__value;
-    			add_location(option0, file, 32, 4, 753);
-    			option1.__value = "s";
-    			option1.value = option1.__value;
-    			add_location(option1, file, 33, 4, 790);
+    			add_location(label2, file, 41, 2, 995);
     			attr_dev(select, "id", "i");
     			select.required = true;
-    			if (/*icon*/ ctx[2] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[9].call(select));
-    			add_location(select, file, 31, 2, 706);
+    			if (/*icon*/ ctx[3] === void 0) add_render_callback(() => /*select_change_handler*/ ctx[10].call(select));
+    			add_location(select, file, 42, 2, 1026);
     			attr_dev(label3, "for", "p");
-    			add_location(label3, file, 35, 2, 836);
+    			add_location(label3, file, 47, 2, 1173);
     			attr_dev(input2, "type", "color");
     			attr_dev(input2, "id", "p");
     			input2.required = true;
-    			add_location(input2, file, 36, 2, 876);
+    			add_location(input2, file, 48, 2, 1213);
     			attr_dev(form, "id", "form");
-    			add_location(form, file, 25, 0, 466);
+    			add_location(form, file, 36, 0, 786);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -522,24 +579,27 @@ var app = (function () {
     			append_dev(form, label2);
     			append_dev(form, t9);
     			append_dev(form, select);
-    			append_dev(select, option0);
-    			append_dev(select, option1);
-    			select_option(select, /*icon*/ ctx[2]);
-    			append_dev(form, t12);
+
+    			for (let i = 0; i < each_blocks.length; i += 1) {
+    				each_blocks[i].m(select, null);
+    			}
+
+    			select_option(select, /*icon*/ ctx[3]);
+    			append_dev(form, t10);
     			append_dev(form, label3);
-    			append_dev(form, t14);
+    			append_dev(form, t12);
     			append_dev(form, input2);
-    			set_input_value(input2, /*color*/ ctx[3]);
-    			insert_dev(target, t15, anchor);
+    			set_input_value(input2, /*color*/ ctx[2]);
+    			insert_dev(target, t13, anchor);
     			if (if_block) if_block.m(target, anchor);
     			insert_dev(target, if_block_anchor, anchor);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[7]),
-    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[8]),
-    					listen_dev(select, "change", /*select_change_handler*/ ctx[9]),
-    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[10])
+    					listen_dev(input0, "input", /*input0_input_handler*/ ctx[8]),
+    					listen_dev(input1, "input", /*input1_input_handler*/ ctx[9]),
+    					listen_dev(select, "change", /*select_change_handler*/ ctx[10]),
+    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[11])
     				];
 
     				mounted = true;
@@ -554,12 +614,36 @@ var app = (function () {
     				set_input_value(input1, /*date*/ ctx[1]);
     			}
 
-    			if (dirty & /*icon*/ 4) {
-    				select_option(select, /*icon*/ ctx[2]);
+    			if (dirty & /*icons*/ 32) {
+    				each_value = /*icons*/ ctx[5];
+    				validate_each_argument(each_value);
+    				let i;
+
+    				for (i = 0; i < each_value.length; i += 1) {
+    					const child_ctx = get_each_context(ctx, each_value, i);
+
+    					if (each_blocks[i]) {
+    						each_blocks[i].p(child_ctx, dirty);
+    					} else {
+    						each_blocks[i] = create_each_block(child_ctx);
+    						each_blocks[i].c();
+    						each_blocks[i].m(select, null);
+    					}
+    				}
+
+    				for (; i < each_blocks.length; i += 1) {
+    					each_blocks[i].d(1);
+    				}
+
+    				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty & /*color*/ 8) {
-    				set_input_value(input2, /*color*/ ctx[3]);
+    			if (dirty & /*icon, icons*/ 40) {
+    				select_option(select, /*icon*/ ctx[3]);
+    			}
+
+    			if (dirty & /*color*/ 4) {
+    				set_input_value(input2, /*color*/ ctx[2]);
     			}
 
     			if (/*url*/ ctx[4]) {
@@ -581,7 +665,8 @@ var app = (function () {
     			if (detaching) detach_dev(h1);
     			if (detaching) detach_dev(t1);
     			if (detaching) detach_dev(form);
-    			if (detaching) detach_dev(t15);
+    			destroy_each(each_blocks, detaching);
+    			if (detaching) detach_dev(t13);
     			if (if_block) if_block.d(detaching);
     			if (detaching) detach_dev(if_block_anchor);
     			mounted = false;
@@ -606,8 +691,20 @@ var app = (function () {
     	let url;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("App", slots, []);
-    	let title = "Test";
-    	let date = "2021-04-19";
+
+    	const icons = [
+    		{ id: "a", label: "Car" },
+    		{ id: "b", label: "Beer" },
+    		{ id: "c", label: "Check" },
+    		{ id: "h", label: "Heart" },
+    		{ id: "m", label: "Music" },
+    		{ id: "p", label: "Plane" },
+    		{ id: "s", label: "Star" },
+    		{ id: "u", label: "Umbrella" }
+    	].sort((a, b) => a.label.localeCompare(b.label));
+
+    	let title = "";
+    	let date = "";
     	let icon = "h";
     	let color = "#ff0000";
     	const writable_props = [];
@@ -628,23 +725,33 @@ var app = (function () {
 
     	function select_change_handler() {
     		icon = select_value(this);
-    		$$invalidate(2, icon);
+    		$$invalidate(3, icon);
+    		$$invalidate(5, icons);
     	}
 
     	function input2_input_handler() {
     		color = this.value;
-    		$$invalidate(3, color);
+    		$$invalidate(2, color);
     	}
 
-    	$$self.$capture_state = () => ({ title, date, icon, color, params, s, url });
+    	$$self.$capture_state = () => ({
+    		icons,
+    		title,
+    		date,
+    		icon,
+    		color,
+    		params,
+    		s,
+    		url
+    	});
 
     	$$self.$inject_state = $$props => {
     		if ("title" in $$props) $$invalidate(0, title = $$props.title);
     		if ("date" in $$props) $$invalidate(1, date = $$props.date);
-    		if ("icon" in $$props) $$invalidate(2, icon = $$props.icon);
-    		if ("color" in $$props) $$invalidate(3, color = $$props.color);
-    		if ("params" in $$props) $$invalidate(5, params = $$props.params);
-    		if ("s" in $$props) $$invalidate(6, s = $$props.s);
+    		if ("icon" in $$props) $$invalidate(3, icon = $$props.icon);
+    		if ("color" in $$props) $$invalidate(2, color = $$props.color);
+    		if ("params" in $$props) $$invalidate(6, params = $$props.params);
+    		if ("s" in $$props) $$invalidate(7, s = $$props.s);
     		if ("url" in $$props) $$invalidate(4, url = $$props.url);
     	};
 
@@ -654,7 +761,7 @@ var app = (function () {
 
     	$$self.$$.update = () => {
     		if ($$self.$$.dirty & /*title, date, icon, color*/ 15) {
-    			$$invalidate(5, params = title && date && {
+    			$$invalidate(6, params = title && date && {
     				l: title,
     				t: date,
     				i: icon,
@@ -662,11 +769,11 @@ var app = (function () {
     			});
     		}
 
-    		if ($$self.$$.dirty & /*params*/ 32) {
-    			$$invalidate(6, s = params && btoa(JSON.stringify(params)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, ""));
+    		if ($$self.$$.dirty & /*params*/ 64) {
+    			$$invalidate(7, s = params && btoa(JSON.stringify(params)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, ""));
     		}
 
-    		if ($$self.$$.dirty & /*s*/ 64) {
+    		if ($$self.$$.dirty & /*s*/ 128) {
     			$$invalidate(4, url = s && `${location.origin.replace(/:(80|443)$/, "")}/r/${s}/`);
     		}
     	};
@@ -674,9 +781,10 @@ var app = (function () {
     	return [
     		title,
     		date,
-    		icon,
     		color,
+    		icon,
     		url,
+    		icons,
     		params,
     		s,
     		input0_input_handler,

@@ -1,4 +1,4 @@
-const icons = require('./icons');
+const { iconIds } = require('./icons');
 
 module.exports.parseParams = function parseParams(s, query) {
   if (!s) throw statusError(400, 'Missing configuration');
@@ -39,9 +39,8 @@ function parseDate(s) {
   };
 }
 
-function parseIcon(id = 'h') {
-  const icon = icons[id];
-  if (!icon) throw statusError(400, `Invalid icon: ${id}`);
+function parseIcon(icon = 'h') {
+  if (!iconIds.includes(icon)) throw statusError(400, `Invalid icon: ${icon}`);
   return icon;
 }
 
