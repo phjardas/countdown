@@ -1,6 +1,18 @@
 # Countdown
 
-# New Icons
+## Local Development
+
+Prerequisites:
+* Node.js 12+
+
+```bash
+npm install
+npm run dev
+```
+
+--> http://localhost:3000/
+
+## New Icons
 
 Prerequisite: Install Inkscape.
 
