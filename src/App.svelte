@@ -10,9 +10,9 @@
     { id: 'u', label: 'Umbrella' },
   ].sort((a, b) => a.label.localeCompare(b.label));
 
-  let title = 'Test';
-  let date = '2021-04-19';
-  let icon = 'h';
+  let title = '';
+  let date = '';
+  let icon = icons[Math.floor(Math.random() * icons.length)].id;
   let color = hslToHex(Math.floor(Math.random() * 360), 100, 50);
 
   const shareable = typeof navigator.share === 'function';
