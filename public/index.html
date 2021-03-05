@@ -9,15 +9,26 @@
     box-sizing: border-box;
   }
 
-  html,
-  body {
-    height: 100%;
-  }
-
-  html {
+  :root {
     --color: #444;
     --muted: #ccc;
     --bg: white;
+    --light: white;
+  }
+
+  /* dark theme */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color: #ccc;
+      --muted: #666;
+      --bg: #26323d;
+      --light: rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  html,
+  body {
+    height: 100%;
   }
 
   body {
@@ -25,11 +36,6 @@
     background: var(--bg);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
     line-height: 1.5;
-    padding: 2rem;
-    display: grid;
-    gap: 1rem;
-    grid-template-rows: auto auto auto 1fr;
-    line-height: 1;
   }
 
   h1 {
@@ -38,46 +44,79 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
-    margin-bottom: 1rem;
   }
 
   .page {
     margin: 0 auto;
     width: 100%;
     max-width: 600px;
+    padding: 2rem;
+    display: grid;
+    gap: 1rem;
   }
 
   #form {
     display: grid;
-    gap: 0.5rem 1rem;
+    gap: 1rem;
     grid-template-columns: auto 1fr;
   }
 
-  #preview {
-    width: 100%;
-    height: 100%;
+  input {
+    border: 1px solid var(--muted);
+    border-radius: 0.25rem;
+    font-family: inherit;
+    font-size: 1em;
+    line-height: inherit;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    background: var(--light);
+    color: inherit;
+  }
+
+  input[type='color'] {
+    padding: 0;
     border: none;
+    cursor: pointer;
+    background: transparent;
   }
 
   p {
     text-align: center;
   }
 
+  .icon-select {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fit, 40px);
+  }
+
+  .icon-select-btn {
+    border: 2px solid transparent;
+    background: transparent;
+    border-radius: 0.25rem;
+    padding: 2px;
+    line-height: 1;
+  }
+  .icon-select-btn.selected {
+    border-color: var(--color);
+    background: var(--light);
+  }
+
   .button {
     display: inline-block;
     text-decoration: none;
     background-color: var(--color);
-    color: white;
+    color: var(--bg);
     padding: 0.5em 1em;
     font-weight: bold;
     font-size: 1.25em;
     border-radius: 0.5em;
     border: 3px solid var(--color);
+    cursor: pointer;
     transition: background-color 100ms linear, color 100ms linear;
-    margin: 1rem 0;
   }
   .button:hover {
-    background-color: white;
+    background-color: transparent;
     color: var(--color);
   }
 </style>
